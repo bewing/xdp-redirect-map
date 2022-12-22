@@ -33,8 +33,7 @@ $ ip link show bar
     link/ether 42:43:b3:86:5f:12 brd ff:ff:ff:ff:ff:ff link-netnsid 7
 
 ```
-`0x0102` is decimal 258 -- so I wonder if I am running into an endianess issue I'm not understanding?
 
-Unfortunately, I cannot seem to make it work yet.  Running `ip netns exec foons iperf -c 192.0.2.1 -u -b 1m -t 240`, I can then run `ip netns exec foons tcpdump -nei eth0` and see traffic going into the netns veth device, but I never see traffic arriving if I do `ip netns exec barns tcpdump -nei eth0`.
-
-I know the traffic is being redirected, because `tcpdump -nei foo` on the main namespace doesn't show any traffic while the XDP is loaded.
+This code works as-is attaching to `foo` with `link.XDPGenericMode` (skb) mode.  If attempting to attach with `link.XDPDriverMode` (the default),
+you **MUST** attach an XDP program of some sort to the `eth0` in the `barns` namespace, as noted in this paper:
+https://www.files.netdevconf.info/f/a63b274e50f943a0a474

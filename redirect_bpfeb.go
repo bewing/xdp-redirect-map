@@ -54,6 +54,7 @@ type redirectSpecs struct {
 //
 // It can be passed ebpf.CollectionSpec.Assign.
 type redirectProgramSpecs struct {
+	XdpPassFunc     *ebpf.ProgramSpec `ebpf:"xdp_pass_func"`
 	XdpRedirectFunc *ebpf.ProgramSpec `ebpf:"xdp_redirect_func"`
 }
 
@@ -96,11 +97,13 @@ func (m *redirectMaps) Close() error {
 //
 // It can be passed to loadRedirectObjects or ebpf.CollectionSpec.LoadAndAssign.
 type redirectPrograms struct {
+	XdpPassFunc     *ebpf.Program `ebpf:"xdp_pass_func"`
 	XdpRedirectFunc *ebpf.Program `ebpf:"xdp_redirect_func"`
 }
 
 func (p *redirectPrograms) Close() error {
 	return _RedirectClose(
+		p.XdpPassFunc,
 		p.XdpRedirectFunc,
 	)
 }

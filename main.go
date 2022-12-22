@@ -23,7 +23,7 @@ func main() {
 	l, err := link.AttachXDP(link.XDPOptions{
 		Program:   bpfObjs.XdpRedirectFunc,
 		Interface: iface.Index,
-		Flags:     link.XDPDriverMode,
+		Flags:     link.XDPGenericMode,
 	})
 	defer l.Close()
 	iface, err = net.InterfaceByName("bar")
